@@ -267,6 +267,8 @@ Builds a trie from all patterns, then constructs failure links (similar to KMP's
 
 [**Vansh Chowdhury** ](https://github.com/itsvnsh)
 
+[**Arnav Chauhan** ](https://github.com/ArnavChauhan07)
+
 ---
 
 ## 📄 License

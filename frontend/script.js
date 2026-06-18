@@ -1,7 +1,6 @@
 const API = 'http://localhost:8080/api';
 let selAlgo = 'naive', curOp = 'complement';
 
-// ─── Health Check ──────────────────────────────────────────
 async function checkHealth() {
   try {
     const r = await fetch(API + '/health', { signal: AbortSignal.timeout(2000) });
@@ -14,7 +13,6 @@ async function checkHealth() {
 }
 checkHealth();
 
-// ─── Theme Toggle ──────────────────────────────────────────
 function toggleTheme() {
   const body = document.body;
   body.classList.toggle('light-theme');
@@ -22,13 +20,13 @@ function toggleTheme() {
   icon.textContent = body.classList.contains('light-theme') ? '☀️' : '🌙';
   localStorage.setItem('theme', body.classList.contains('light-theme') ? 'light' : 'dark');
 }
-// Restore theme
+
 if (localStorage.getItem('theme') === 'light') {
   document.body.classList.add('light-theme');
   document.getElementById('theme-icon').textContent = '☀️';
 }
 
-// ─── Tab Navigation ────────────────────────────────────────
+
 const TAB_NAMES = ['matcher', 'benchmark', 'visualize', 'utils', 'upload', 'history', 'lps', 'flow', 'info'];
 
 function goTab(n) {
@@ -41,7 +39,7 @@ function goTab(n) {
   if (n === 'visualize') visReset();
 }
 
-// ─── Algorithm Picker ──────────────────────────────────────
+
 function pickAlgo(el, name) {
   document.querySelectorAll('.apill').forEach(p => p.classList.remove('on'));
   el.classList.add('on'); selAlgo = name;

@@ -20,9 +20,10 @@ public class NaiveStrategy implements StringMatchingStrategy {
 
     @Override
     public MatchResult search(String text, String pattern) {
+        // Include allocation and preprocessing in the reported elapsed time.
+        long t0 = System.nanoTime();
         List<Integer> pos = new ArrayList<>();
         int cmp = 0, n = text.length(), m = pattern.length();
-        long t0 = System.nanoTime();
         for (int i = 0; i <= n - m; i++) {
             int j = 0;
             while (j < m) {

@@ -22,6 +22,8 @@ public class BoyerMooreStrategy implements StringMatchingStrategy {
 
     @Override
     public MatchResult search(String text, String pattern) {
+        // Include allocation and preprocessing in the reported elapsed time.
+        long t0 = System.nanoTime();
         List<Integer> pos = new ArrayList<>();
         int cmp = 0, n = text.length(), m = pattern.length();
         int[] bc = new int[256];
@@ -29,7 +31,6 @@ public class BoyerMooreStrategy implements StringMatchingStrategy {
         for (int i = 0; i < m; i++) bc[pattern.charAt(i)] = i;
 
         int s = 0;
-        long t0 = System.nanoTime();
         while (s <= n - m) {
             int j = m - 1;
             while (j >= 0) {

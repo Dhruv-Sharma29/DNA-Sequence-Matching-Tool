@@ -19,7 +19,6 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
 @Tag(name = "DNA Pattern Matching", description = "APIs for genome sequence pattern matching and bioinformatics utilities")
 public class ApiController {
 

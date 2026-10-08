@@ -24,9 +24,11 @@ public class RabinKarpStrategy implements StringMatchingStrategy {
 
     @Override
     public MatchResult search(String text, String pattern) {
+        // Include allocation and preprocessing in the reported elapsed time.
+        long t0 = System.nanoTime();
         List<Integer> pos = new ArrayList<>();
         int cmp = 0, n = text.length(), m = pattern.length();
-        if (m > n) return new MatchResult(getName(), pos, cmp, 0, getComplexity());
+        if (m > n) return new MatchResult(getName(), pos, cmp, System.nanoTime() - t0, getComplexity());
 
         long h = 1;
         for (int i = 0; i < m - 1; i++) h = (h * BASE) % MOD;
@@ -37,7 +39,6 @@ public class RabinKarpStrategy implements StringMatchingStrategy {
             th = (BASE * th + val(text.charAt(i))) % MOD;
         }
 
-        long t0 = System.nanoTime();
         for (int i = 0; i <= n - m; i++) {
             if (ph == th) {
                 boolean match = true;

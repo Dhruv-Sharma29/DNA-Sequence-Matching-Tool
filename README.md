@@ -7,7 +7,7 @@
 [![Java](https://img.shields.io/badge/Java-17+-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.x-6DB33F?style=flat-square&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Gradle](https://img.shields.io/badge/Gradle-Build-02303A?style=flat-square&logo=gradle&logoColor=white)](https://gradle.org/)
-[![Tests](https://img.shields.io/badge/Tests-92%20Passing-34d399?style=flat-square)](/)
+[![Tests](https://github.com/Dhruv-Sharma29/DNA-Sequence-Matching-Tool/actions/workflows/ci.yml/badge.svg)](https://github.com/Dhruv-Sharma29/DNA-Sequence-Matching-Tool/actions)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
@@ -136,33 +136,34 @@ GenomeScan/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Java 17+
+- JDK 17+ (Gradle runs on the installed JDK; compilation targets Java 17)
 - Gradle (or use the included `gradlew` wrapper)
 
 ### Run the Backend
 
 ```bash
 # Clone the repo
-git clone https://github.com/Dhruv-Sharma29/GenomeScan.git
-cd GenomeScan
+git clone https://github.com/Dhruv-Sharma29/DNA-Sequence-Matching-Tool.git
+cd DNA-Sequence-Matching-Tool
 
 # Build and run Spring Boot
 ./gradlew bootRun
 # Server starts at http://localhost:8080
 # Swagger UI at http://localhost:8080/swagger-ui.html
-# H2 Console at http://localhost:8080/h2-console
+# H2 console is disabled by default. For local debugging only:
+# SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun
 ```
 
 ### Open the Frontend
 
-Just open `frontend/index.html` in your browser.
+Open `http://localhost:8080` after starting the backend. Gradle bundles the frontend into the application, and its API requests use the same origin. The Docker frontend on port 3000 proxies `/api/` to the backend.
 The UI auto-checks `GET /api/health` and shows the green **API Connected** dot when the backend is up.
 
 ### Run Tests
 
 ```bash
 ./gradlew test
-# 92 tests: algorithms, service, integration
+# Algorithms, service, integration, and CORS tests; see generated reports for counts
 ```
 
 ### Docker
@@ -274,3 +275,9 @@ Builds a trie from all patterns, then constructs failure links (similar to KMP's
 ## 📄 License
 
 [MIT](LICENSE)
+
+## Runtime configuration and benchmark scope
+
+CORS defaults to same-origin use. To host the frontend on another origin, set `CORS_ALLOWED_ORIGINS` to exact comma-separated origins (for example `http://localhost:5500`). Wildcards are rejected. The H2 console is off by default; the explicit `dev` Spring profile enables it for local debugging.
+
+Reported `timeNs` includes allocation, pattern preprocessing, and scanning for every strategy, including Aho-Corasick automaton construction. Values are single-run wall-clock measurements subject to JVM warm-up and noise, rather than a rigorous statistical microbenchmark.

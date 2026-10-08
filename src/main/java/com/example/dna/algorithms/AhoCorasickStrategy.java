@@ -38,6 +38,8 @@ public class AhoCorasickStrategy implements StringMatchingStrategy {
      * Build the Aho-Corasick automaton and search for all patterns.
      */
     public MatchResult searchMultiple(String text, String[] patterns) {
+        // Include allocation and preprocessing in the reported elapsed time.
+        long t0 = System.nanoTime();
         int n = text.length();
         int cmp = 0;
 
@@ -95,7 +97,6 @@ public class AhoCorasickStrategy implements StringMatchingStrategy {
         }
 
         // --- Step 3: Search the text ---
-        long t0 = System.nanoTime();
         List<Integer> positions = new ArrayList<>();
         Set<Integer> positionSet = new TreeSet<>(); // deduplicate
         int cur = 0;

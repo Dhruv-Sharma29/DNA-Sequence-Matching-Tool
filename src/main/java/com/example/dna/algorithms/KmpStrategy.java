@@ -21,11 +21,12 @@ public class KmpStrategy implements StringMatchingStrategy {
 
     @Override
     public MatchResult search(String text, String pattern) {
+        // Include allocation and preprocessing in the reported elapsed time.
+        long t0 = System.nanoTime();
         List<Integer> pos = new ArrayList<>();
         int cmp = 0, n = text.length(), m = pattern.length();
         int[] lps = buildLPS(pattern);
         int i = 0, j = 0;
-        long t0 = System.nanoTime();
         while (i < n) {
             cmp++;
             if (text.charAt(i) == pattern.charAt(j)) {

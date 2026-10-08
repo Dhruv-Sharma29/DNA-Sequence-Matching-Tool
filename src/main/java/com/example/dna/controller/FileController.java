@@ -20,7 +20,6 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
 @Tag(name = "File Upload", description = "FASTA file upload and parsing")
 public class FileController {
 

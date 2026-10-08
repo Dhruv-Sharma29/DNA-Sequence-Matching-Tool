@@ -21,6 +21,8 @@ public class ZAlgorithmStrategy implements StringMatchingStrategy {
 
     @Override
     public MatchResult search(String text, String pattern) {
+        // Include allocation and preprocessing in the reported elapsed time.
+        long t0 = System.nanoTime();
         List<Integer> pos = new ArrayList<>();
         String concat = pattern + "$" + text;
         int n = concat.length(), m = pattern.length();
@@ -28,7 +30,6 @@ public class ZAlgorithmStrategy implements StringMatchingStrategy {
         int l = 0, r = 0;
         int cmp = 0;
 
-        long t0 = System.nanoTime();
         for (int i = 1; i < n; i++) {
             if (i < r) z[i] = Math.min(r - i, z[i - l]);
             while (i + z[i] < n && concat.charAt(z[i]) == concat.charAt(i + z[i])) {

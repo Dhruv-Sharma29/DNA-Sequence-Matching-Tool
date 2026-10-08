@@ -8,10 +8,10 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 description = 'DNA'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+// Build with the installed supported JDK and emit Java 17-compatible bytecode.
+// No exact Java 17 toolchain download is required on a newer JDK.
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
 }
 
 repositories {
@@ -32,4 +32,9 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Bundle the frontend so the default browser workflow needs no cross-origin access.
+tasks.named('processResources') {
+    from('frontend') { into 'static' }
 }

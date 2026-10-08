@@ -164,4 +164,39 @@ class ApiControllerIntegrationTest {
         mvc.perform(multipart("/api/upload/fasta").file(file))
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    void unconfiguredCrossOriginPreflightIsRejected() throws Exception {
+        mvc.perform(options("/api/match")
+                        .header("Origin", "https://untrusted.example")
+                        .header("Access-Control-Request-Method", "POST"))
+                .andExpect(status().isForbidden())
+                .andExpect(header().doesNotExist("Access-Control-Allow-Origin"));
+    }
+
+    @Test
+    void frontendAssetsAreServedFromTheBackendOrigin() throws Exception {
+        mvc.perform(get("/index.html"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("GenomeScan")));
+        mvc.perform(get("/script.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("const API = '/api'")));
+    }
+
+    @Test
+    void documentedOpenApiEndpointIsAvailable() throws Exception {
+        mvc.perform(get("/api-docs"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.openapi").exists());
+    }
+    @Test
+    void sameOriginBrowserPostsWorkWithDefaultCorsPolicy() throws Exception {
+        mvc.perform(post("/api/match")
+                        .with(request -> { request.setServerName("localhost"); request.setServerPort(3000); return request; })
+                        .header("Origin", "http://localhost:3000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"text\":\"ATGC\",\"pattern\":\"ATGC\",\"algo\":\"KMP\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.matches").value(1));
+    }
 }
